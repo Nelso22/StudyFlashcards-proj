@@ -6,7 +6,7 @@ using Microsoft.Data.SqlClient;
 
 namespace flashcards.DatabaseConfig
 {
-  public class ConfigureLaunch
+  internal class ConfigureLaunch
   {
 
     internal void CreateDb(string connectionString)

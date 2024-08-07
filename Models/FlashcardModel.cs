@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace flashcards.Models
 {
-    public class FlashcardModel
+    public class Flashcard
     {
         public int FlashcardId { get; set; }
 
@@ -19,8 +19,8 @@ namespace flashcards.Models
 
     public class FlashcardDto
     {
+        public int FlashcardId { get; set; }
         public string? Question { get; set; }
-
         public string? Answer { get; set; }
 
     }
@@ -28,10 +28,11 @@ namespace flashcards.Models
 
     public static class FlashcardMapping
     {
-        public static FlashcardDto ToFlashcardDto(this FlashcardModel flashcard)
+        public static FlashcardDto ToFlashcardDto(this Flashcard flashcard)
         {
             return new FlashcardDto
             {
+                FlashcardId = flashcard.FlashcardId,
                 Question = flashcard.Question,
                 Answer = flashcard.Answer
 

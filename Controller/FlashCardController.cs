@@ -1,17 +1,18 @@
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Linq;
+using System.Threading.Tasks;
 using flashcards.Models;
 using Microsoft.Data.SqlClient;
-using Spectre.Console;
 
 namespace flashcards.Controller
 {
-    internal class StackController
+    internal class FlashCardController
     {
         static string connectionString = ConfigurationManager.ConnectionStrings["MyString"].ConnectionString;
 
-        internal void Post(Stack stack)
+        internal void Post(FlashcardDto flashcard)
         {
 
             try
@@ -19,7 +20,7 @@ namespace flashcards.Controller
 
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
-                    string sql = $"INSERT INTO Stacks (StackName) VALUES ('{stack.StackName}')";
+                    string sql = $"INSERT INTO Flashcards (Question, Answer) VALUES ('{flashcard.Question}', '{flashcard.Answer}')";
 
                     using (SqlCommand command = new SqlCommand(sql, connection))
                     {
@@ -38,20 +39,20 @@ namespace flashcards.Controller
 
         }
 
-        internal void Delete(Stack stack)
+        internal void Delete(Flashcard flashcard)
         {
             try
             {
 
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
-                    string sql = $"DELETE FROM Stacks WHERE StackId = '{stack.StackId}'";
+                    string sql = $"DELETE FROM Flashcards WHERE FlashcardId = '{flashcard.FlashcardId}'";
 
                     using (SqlCommand command = new SqlCommand(sql, connection))
                     {
                         connection.Open();
                         command.ExecuteNonQuery();
-                        Console.WriteLine($"\n\nRecord with Id {stack.StackId} was deleted. \n\n");
+                        Console.WriteLine($"\n\nRecord with Id {flashcard.FlashcardId} was deleted. \n\n");
 
                     }
                 }
@@ -63,15 +64,16 @@ namespace flashcards.Controller
             }
         }
 
-        internal List<Stack> GetStacks()
+
+        internal List<Flashcard> GetFlashCards(Stack stack)
         {
-            List<Stack> tableData = new List<Stack>();
+            List<Flashcard> tableData = new List<Flashcard>();
 
             try
             {
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
-                    string sql = @"SELECT * FROM Stacks";
+                    string sql = $@"SELECT * FROM Flashcards WHERE StackId = '{stack.StackId}'  ";
 
                     using (SqlCommand command = new SqlCommand(sql, connection))
                     {
@@ -84,10 +86,12 @@ namespace flashcards.Controller
                                 while (reader.Read())
                                 {
                                     tableData.Add(
-                                        new Stack
+                                        new Flashcard
                                         {
-                                            StackId = reader.GetInt32(0),
-                                            StackName = reader.GetString(1),
+                                            FlashcardId = reader.GetInt32(0),
+                                            StackId = reader.GetInt32(1),
+                                            Question = reader.GetString(2),
+                                            Answer = reader.GetString(3)
                                         }
                                     );
                                 }
@@ -110,57 +114,5 @@ namespace flashcards.Controller
             return tableData;
         }
 
-        internal Stack GetById(int id)
-        {
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-
-                string sql = $"SELECT * FROM Stacks WHERE StackId = '{id}'";
-
-                using (SqlCommand command = new SqlCommand(sql, connection))
-                {
-                    connection.Open();
-
-                    using (SqlDataReader reader = command.ExecuteReader())
-                    {
-
-                        Stack stack = new();
-                        if (reader.HasRows)
-                        {
-                            reader.Read();
-                            stack.StackId = reader.GetInt32(0);
-                            stack.StackName = reader.GetString(1);
-
-                        }
-                        Console.WriteLine("\n\n");
-
-                        return stack;
-                    }
-                }
-
-            }
-        }
-
-        internal void Update(Stack stack)
-        {
-            using (SqlConnection connection = new SqlConnection(connectionString))
-            {
-                string sql = @$"UPDATE Stacks SET 
-                        StackName = '{stack.StackName}' 
-                        WHERE StackId = {stack.StackId}";
-
-                using (SqlCommand command = new SqlCommand(sql, connection))
-                {
-                    connection.Open();
-                    command.ExecuteNonQuery();
-                }
-            }
-
-            Console.WriteLine($"\n\nStack name with Id {stack.StackId} was updated.\n\n");
-        }
-
-
-
     }
-
 }

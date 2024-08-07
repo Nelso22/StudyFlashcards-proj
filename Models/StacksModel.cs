@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 namespace flashcards.Models
 {
 
-    public class StackModel
+    public class Stack
     {
         public int StackId { get; set; }
 
@@ -23,7 +23,7 @@ namespace flashcards.Models
 
     public static class StackMapping
     {
-        public static StackDto ToStackDto(this StackModel stack)
+        public static StackDto ToStackDto(this Stack stack)
         {
             return new StackDto
             {

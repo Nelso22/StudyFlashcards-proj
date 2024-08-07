@@ -47,7 +47,6 @@ namespace flashcards.DatabaseConfig
                             command.ExecuteNonQuery();
                         }
                     }
-                    Console.WriteLine("Tables created successfully.");
                 }
                 catch (Exception ex)
                 {
