@@ -20,7 +20,7 @@ namespace flashcards.Controller
 
                 using (SqlConnection connection = new SqlConnection(connectionString))
                 {
-                    string sql = $"INSERT INTO Flashcards (Question, Answer) VALUES ('{flashcard.Question}', '{flashcard.Answer}')";
+                    string sql = $"INSERT INTO Flashcards (StackId,Question, Answer) VALUES ('{flashcard.StackId}','{flashcard.Question}', '{flashcard.Answer}')";
 
                     using (SqlCommand command = new SqlCommand(sql, connection))
                     {

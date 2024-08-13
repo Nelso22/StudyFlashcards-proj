@@ -6,9 +6,12 @@ namespace flashcards.Controller
 {
     internal class StartMenu
     {
-        // ManageStacks manageStacks = new ManageStacks();
+
         internal static void MainMenu()
         {
+            ManageFlashcards manageFlashcards = new ManageFlashcards();
+            ManageStacks manageStacks = new ManageStacks();
+
             bool closeApp = false;
             while (!closeApp)
             {
@@ -25,29 +28,30 @@ namespace flashcards.Controller
                 var choice = AnsiConsole.Prompt(
                     new SelectionPrompt<string>()
                         .Title("\nMAIN MENU\n\n[#00ffff]Please choose from the following options[/]")
-                        .AddChoices("Select 0 to Close App", "Select 1 to Manage Stacks", "Select 2 to Manage Flashcards", "Select 3 to Study", "Select 4 to View Study Session Data"));
+                        .AddChoices("Close App", "Manage Stacks", "Manage Flashcards", "Study", "View Study Session Data"));
 
                 switch (choice)
                 {
-                    case "Select 0 to Close App":
+                    case "Close App":
                         closeApp = true;
                         Environment.Exit(0);
                         break;
 
-                    case "Select 1 to Manage Stacks":
+                    case "Manage Stacks":
                         //Method for Managing Stacks
                         ManageStacks.StackMenuOptions();
                         break;
 
-                    case "Select 2 to Manage Flashcards":
-                        // Add your method call here for managing flashcards
+                    case "Manage Flashcards":
+
+                        manageStacks.EditStack();
                         break;
 
-                    case "Select 3 to Study":
+                    case "Study":
                         // Add your method call here for studying
                         break;
 
-                    case "Select 4 to View Study Session Data":
+                    case "To View Study Session Data":
                         // Add your method call here for viewing study session data
                         break;
 
@@ -58,6 +62,8 @@ namespace flashcards.Controller
                 }
             }
         }
+
+
 
 
     }

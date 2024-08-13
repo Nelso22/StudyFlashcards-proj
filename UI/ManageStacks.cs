@@ -11,6 +11,7 @@ namespace flashcards.UI
     internal class ManageStacks
     {
         StackController stackController = new();
+        ManageFlashcards manageFlashcards = new();
 
         internal static void StackMenuOptions()
         {
@@ -27,27 +28,27 @@ namespace flashcards.UI
                     new SelectionPrompt<string>()
                     .Title("[dodgerblue2]Please choose from the following options[/]")
                     .AddChoices(new[] {
-                       "Select 0 to Return to Main Menu", "Select 1 Add Stack", "Select 2 Delete Stack", "Select 3 to Update name of a stack",
+                       "Return to Main Menu", "Add Stack", "Delete Stack", "Update name of a stack",
                     })
                 );
 
 
                 switch (userChoice)
                 {
-                    case "Select 0 to Return to Main Menu":
+                    case "Return to Main Menu":
                         goBack = true;
                         StartMenu.MainMenu();
                         break;
 
-                    case "Select 1 Add Stack":
+                    case "Add Stack":
                         manageStacks.AddStack();
                         break;
 
-                    case "Select 2 Delete Stack":
+                    case "Delete Stack":
                         manageStacks.Delete();
                         break;
 
-                    case "Select 3 to Update name of a stack":
+                    case "Update name of a stack":
                         manageStacks.editStackName();
                         break;
 
@@ -91,9 +92,6 @@ namespace flashcards.UI
             }
 
             ManageStacks.StackMenuOptions();
-
-
-
         }
 
         private void Delete()
@@ -164,6 +162,34 @@ namespace flashcards.UI
 
             Console.WriteLine("Press any key to return to the menu");
             Console.ReadLine();
+
+        }
+
+        public void EditStack()
+        {
+            var allStacks = stackController.GetStacks();
+
+            if (allStacks.Count == 0)
+            {
+                Console.WriteLine("No Stacks to add Flashcard to. Press any key to continue");
+                Console.ReadLine();
+                return;
+            }
+
+            var userOptions = new SelectionPrompt<Stack>();
+            userOptions.Title("Please choose from one of the following stack names to add a flashcard to");
+            userOptions.AddChoices(allStacks);
+            userOptions.AddChoice(new Stack { StackId = 0, StackName = "Return to main menu" });
+            userOptions.UseConverter(stack => stack.StackName);
+
+            var selectedOption = AnsiConsole.Prompt(userOptions);
+            if (selectedOption.StackId == 0)
+            {
+                StartMenu.MainMenu();
+                return;
+            }
+
+            manageFlashcards.FlashcardMenu(selectedOption);
 
         }
 

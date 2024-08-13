@@ -28,7 +28,7 @@ namespace flashcards.DatabaseConfig
                     CREATE TABLE Flashcards (
                         FlashcardId INT IDENTITY(1,1) PRIMARY KEY,
                         StackId INT NOT NULL,
-                        Question NVARCHAR(255) NOT NULL,
+                        Question NVARCHAR(255) UNIQUE NOT NULL,
                         Answer NVARCHAR(255) NOT NULL,
                         FOREIGN KEY (StackId) REFERENCES Stacks(StackId) ON DELETE CASCADE
                     );

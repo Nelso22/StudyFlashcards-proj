@@ -19,7 +19,7 @@ namespace flashcards.Models
 
     public class FlashcardDto
     {
-        public int FlashcardId { get; set; }
+        public int StackId { get; set; }
         public string? Question { get; set; }
         public string? Answer { get; set; }
 
@@ -32,7 +32,7 @@ namespace flashcards.Models
         {
             return new FlashcardDto
             {
-                FlashcardId = flashcard.FlashcardId,
+                StackId = flashcard.FlashcardId,
                 Question = flashcard.Question,
                 Answer = flashcard.Answer
 
